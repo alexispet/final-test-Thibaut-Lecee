@@ -1,0 +1,20 @@
+services:
+  node:
+    image: ghcr.io/alexispet/final-test-thibaut-lecee/nodeExpress:latest
+    ports:
+      - "8080:8080"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    environment:
+        MARIADB_USER: mariaUser
+        MARIADB_PASSWORD: mariaPassword
+        MARIADB_DATABASE: finalDB
+        ENV_MODE: prod
+
+  mariadb:
+    image: mariadb:11.2.2
+    environment:
+      MARIADB_USER: ${{ env.MARIADB_USER }}
+      MARIADB_PASSWORD: ${{ env.MARIADB_PASSWORD }}
+      MARIADB_DATABASE: ${{ env.MARIADB_DATABASE }}
+      MARIADB_RANDOM_ROOT_PASSWORD: "yes"
