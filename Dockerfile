@@ -4,7 +4,7 @@ COPY . /app/
 
 WORKDIR /app
 
-RUN npm install
+RUN npm ci
 
 
 FROM node:21.6.0-alpine3.19 as production

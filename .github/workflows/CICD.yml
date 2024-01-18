@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker build --tag docker.compose.yml --platform=linux/amd64 .
+      - run: docker build --tag docker-compose.yml --platform=linux/amd64 .
       - run: docker compose up -d
 
   test:
@@ -31,10 +31,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker build --tag docker.compose.yml --platform=linux/amd64 .
+      - run: docker build --tag docker-compose.yml --platform=linux/amd64 .
       - run: docker compose up -d
-      - run: sleep 90 # wait for the database to be ready mariadb
-      - run: docker compose logs mariadb
+      - run: sleep 10 # wait for the database to be ready mariadb
       - run: docker compose logs express
       - run: docker compose exec express npm run test
   deploy:
@@ -51,7 +50,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
