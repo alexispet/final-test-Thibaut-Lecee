@@ -2,7 +2,7 @@ services:
   start:
     depends_on: [mariadb]
     build:
-      context: docker/server
+      context: .
       target: express
     environment:
       NODE_ENV: development
