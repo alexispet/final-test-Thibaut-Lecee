@@ -1,9 +1,8 @@
 #!/bin/sh
-set -e
-
+echo "Coucou"
 echo "Starting docker entrypoint"
 
-if [ "$ENV_MODE" = "development" ]; then
+if [ "$NODE_ENV" = "development" ]; then
   echo "Running on development mode"
   npm install
 fi

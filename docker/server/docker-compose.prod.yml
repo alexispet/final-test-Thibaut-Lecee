@@ -6,10 +6,10 @@ services:
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     environment:
-        MARIADB_USER: mariaUser
-        MARIADB_PASSWORD: mariaPassword
-        MARIADB_DATABASE: finalDB
-        ENV_MODE: prod
+      MARIADB_USER: mariaUser
+      MARIADB_PASSWORD: mariaPassword
+      MARIADB_DATABASE: finalDB
+
 
   mariadb:
     image: mariadb:11.2.2

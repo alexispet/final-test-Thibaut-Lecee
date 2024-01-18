@@ -3,21 +3,23 @@ services:
     depends_on: [ mariadb ]
     build:
       context: .
+      target: express
     environment:
       NODE_ENV: development
     ports:
       - "8000:8000"
-#    volumes:
-#      - ".:/app"
+    volumes:
+      - ".:/app"
+
     command: [ "npm", "run", "start" ]
 
   mariadb:
     image: mariadb:11.2.2
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      MYSQL_DATABASE: mariadb
-      MYSQL_USER: mariaUser
-      MYSQL_PASSWORD: mariaPassword
+      MYSQL_DATABASE: finalDB
+      MYSQL_USER: mariaDB
+      MYSQL_PASSWORD: mariaDB
     volumes:
       - "./docker/mariadb/data:/var/lib/mysql"
     ports:

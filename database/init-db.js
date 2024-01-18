@@ -3,8 +3,8 @@ import mariadb from "mariadb";
 // Configuration de la base de données
 const pool = mariadb.createPool({
     host: process.env.DB_HOST || 'mariadb',
-    user: process.env.DB_USER || 'mariaUser',
-    password: process.env.DB_PASSWORD || 'mariaPassword',
+    user: process.env.DB_USER || 'mariaDB',
+    password: process.env.DB_PASSWORD || 'mariaDB',
     database: process.env.DB_DATABASE || 'finalDB',
     connectionLimit: 5
 });
@@ -15,20 +15,29 @@ async function initDB() {
         conn = await pool.getConnection();
 
         await conn.query(`
-          CREATE TABLE IF NOT EXISTS posts (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            title VARCHAR(255) NOT NULL,
-            content TEXT,
-            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-          )
+            CREATE TABLE IF NOT EXISTS posts
+            (
+                id
+                INT
+                AUTO_INCREMENT
+                PRIMARY
+                KEY,
+                title
+                VARCHAR
+            (
+                255
+            ) NOT NULL,
+                content TEXT,
+                createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
         `);
 
         console.log('Structure de la base de données créée avec succès.');
         await conn.query(`
-          INSERT INTO posts (title, content) VALUES
-          ('Premier post', 'Contenu du premier post'),
-          ('Deuxième post', 'Contenu du deuxième post'),
-          ('Troisième post', 'Contenu du troisième post')
+            INSERT INTO posts (title, content)
+            VALUES ('Premier post', 'Contenu du premier post'),
+                   ('Deuxième post', 'Contenu du deuxième post'),
+                   ('Troisième post', 'Contenu du troisième post')
         `);
 
         console.log('Données insérées avec succès.');
