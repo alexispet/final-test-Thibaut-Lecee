@@ -33,6 +33,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: docker build --tag docker.compose.yml --platform=linux/amd64 .
       - run: docker compose up -d
+      - run: docker sleep 30  #let 30 seconds for the database to start and docker to be ready
       - run: docker compose exec express npm run test
 
   deploy:
