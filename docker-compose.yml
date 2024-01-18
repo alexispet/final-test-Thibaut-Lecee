@@ -7,19 +7,21 @@ services:
     environment:
       NODE_ENV: development
     ports:
-      - "8000:8000"
+      - "3001:3001"
     volumes:
       - ".:/app"
-
+    env_file:
+      - .env
     command: [ "npm", "run", "start" ]
 
   mariadb:
     image: mariadb:11.2.2
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      MYSQL_DATABASE: finalDB
-      MYSQL_USER: mariaDB
-      MYSQL_PASSWORD: mariaDB
+      MARIADB_HOST: mariadb
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
     volumes:
       - "./docker/mariadb/data:/var/lib/mysql"
     ports:
@@ -29,7 +31,7 @@ services:
     image: adminer:4.8.1-standalone
     restart: always
     ports:
-      - "8080:8080"
+      - "8001:8001"
     environment:
       ADMINER_DEFAULT_SERVER: mariadb
     depends_on:

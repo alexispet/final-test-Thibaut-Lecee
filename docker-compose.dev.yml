@@ -2,19 +2,19 @@ services:
   node:
     image: ghcr.io/alexispet/final-test-thibaut-lecee/nodeexpress:develop
     ports:
-      - "8000:8000"
+      - "3001:3001"
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     environment:
-      MARIADB_USER: mariaDB
-      MARIADB_PASSWORD: mariaDB
-      MARIADB_DATABASE: finalDB
       NODE_ENV: development
+    env_file:
+      - .env
 
   mariadb:
     image: mariadb:11.2.2
     environment:
-      MARIADB_USER: ${{ env.MARIADB_USER }}
-      MARIADB_PASSWORD: ${{ env.MARIADB_PASSWORD }}
-      MARIADB_DATABASE: ${{ env.MARIADB_DATABASE }}
+      MARIADB_HOST: mariadb
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
       MARIADB_RANDOM_ROOT_PASSWORD: "yes"

@@ -31,11 +31,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker build --tag docker-compose.yml --platform=linux/amd64 .
-      - run: docker compose up -d
+      - run: docker compose  -f /app/docker/server/docker-compose.prod.yml up -d --build
       - run: sleep 10 # wait for the database to be ready mariadb
-      - run: docker compose logs express
-      - run: docker compose exec express npm run test
+      - run: docker compose exec production npm run test
   deploy:
     needs: test
     runs-on: ubuntu-latest

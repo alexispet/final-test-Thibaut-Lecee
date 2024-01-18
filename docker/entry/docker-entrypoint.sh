@@ -1,5 +1,5 @@
 #!/bin/sh
-echo "Coucou"
+
 echo "Starting docker entrypoint"
 
 if [ "$NODE_ENV" = "development" ]; then
