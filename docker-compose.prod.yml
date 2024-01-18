@@ -7,12 +7,18 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
     env_file:
       - .env
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+
 
   mariadb:
     image: mariadb:11.2.2
     environment:
-      MARIADB_HOST: mariadb
-      MARIADB_USER: ${DB_USER}
-      MARIADB_PASSWORD: ${DB_PASSWORD}
-      MARIADB_DATABASE: ${DB_NAME}
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
       MARIADB_RANDOM_ROOT_PASSWORD: "yes"
