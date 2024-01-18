@@ -3,7 +3,7 @@ services:
     depends_on: [ mariadb ]
     build:
       context: .
-      target: express
+      target: production
     environment:
       NODE_ENV: development
     ports:
