@@ -1,12 +1,16 @@
-name: CI/CD Pipeline
+name: CI/CD
+
+run-name: ${{ github.actor }} is running CI/CD
+
 on:
   push:
     branches:
       - main
       - develop
-    env:
-      REGISTRY: ghcr.io
-      IMAGE_NAME: ${{ github.repository }}
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   dependency-audit:
