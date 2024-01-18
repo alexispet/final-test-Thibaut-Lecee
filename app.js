@@ -34,7 +34,7 @@ app.get('/post', async (req, res) => {
 app.get('/test', (req, res) => {
     res.send(`
         <!DOCTYPE html>
-        <html>
+        <html lang="fr">
         <head>
             <title>Test Page for Lighthouse</title>
         </head>

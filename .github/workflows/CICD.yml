@@ -66,10 +66,47 @@ jobs:
       - run: docker compose exec express npm run test
 
 
-  deploy:
+  deploy-prod:
     needs: test
+    environment:
+      name: production
+      url: http://ec2-54-145-123-56.compute-1.amazonaws.com
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/nodeExpress
+
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  deploy-dev:
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: development
+      url: http://54.145.123.56
+    if: github.ref == 'refs/heads/develop'
     permissions:
       contents: read
       packages: write
