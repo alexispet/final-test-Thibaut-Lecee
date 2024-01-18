@@ -19,32 +19,51 @@ jobs:
       - uses: actions/checkout@v4
       - run: npm audit --audit-level=high
 
+  codeql-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+
   build:
+    needs: codeql-analysis
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker build --tag docker-compose.yml --platform=linux/amd64 .
-      - run: docker compose up -d
-    env:
-      DB_DATABASE: ${{ secrets.DB_DATABASE }}
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_USER: ${{ secrets.DB_USER }}
+      - name: Set up Docker Compose
+        run: |
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> $GITHUB_ENV
+          echo "DB_USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> $GITHUB_ENV
+      - name: Build and Start Containers
+        run: docker compose up -d
 
   test:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker build --tag docker-compose.yml --platform=linux/amd64 .
-      - run: docker compose up -d
-      - run: sleep 10 # wait for the database to be ready mariadb
-      - run: docker compose exec production npm run test
-    env:
-      DB_DATABASE: ${{ secrets.DB_DATABASE }}
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_USER: ${{ secrets.DB_USER }}
+      - uses: adambirds/docker-compose-action@v1.3.0
+        with:
+          compose-file: "./docker-compose.yml"
+          down-flags: "--volumes"
+          services: |
+            express
+            mariadb
+          test-container: production
+          test-command: "npm run test"
+        env:
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_USER: ${{ secrets.DB_USER }}
+
   deploy:
     needs: test
     runs-on: ubuntu-latest
