@@ -21,7 +21,7 @@ services:
       MARIADB_HOST: mariadb
       MARIADB_USER: ${DB_USER}
       MARIADB_PASSWORD: ${DB_PASSWORD}
-      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_DATABASE: ${DB_DATABASE}
     volumes:
       - "./docker/mariadb/data:/var/lib/mysql"
     ports:
