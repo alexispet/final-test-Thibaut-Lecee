@@ -1,6 +1,6 @@
 services:
-  start:
-    depends_on: [mariadb]
+  express:
+    depends_on: [ mariadb ]
     build:
       context: .
       target: express
