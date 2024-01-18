@@ -31,6 +31,19 @@ app.get('/post', async (req, res) => {
         if (conn) return conn.end();
     }
 });
+app.get('/test', (req, res) => {
+    res.send(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Test Page for Lighthouse</title>
+        </head>
+        <body>
+            <h1>Hello Lighthouse!</h1>
+        </body>
+        </html>
+    `);
+});
 
 function findAvailablePort() {
     return new Promise((resolve, reject) => {

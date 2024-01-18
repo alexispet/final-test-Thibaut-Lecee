@@ -1,6 +1,6 @@
-name: CI/CD
+name: Lighthouse
 
-run-name: ${{ github.actor }} is running CI/CD
+run-name: ${{ github.actor }} is running Lighthouse
 
 on:
   push:
@@ -19,10 +19,9 @@ jobs:
         uses: treosh/lighthouse-ci-action@v10
         with:
           urls: |
-            http://ec2-54-145-123-56.compute-1.amazonaws.com/
-            http://ec2-54-145-123-56.compute-1.amazonaws.com/post
-            http://54.145.123.56/
-            http://54.145.123.56/post
+            http://ec2-54-145-123-56.compute-1.amazonaws.com/test
+
+            http://54.145.123.56/test
           budgetPath: ./budget.json
           uploadArtifacts: true
           temporaryPublicStorage: true
