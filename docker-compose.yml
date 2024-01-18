@@ -1,7 +1,8 @@
 services:
-  dev:
+  start:
+    depends_on: [mariadb]
     build:
-      context: .
+      context: docker/server
       target: express
     environment:
       NODE_ENV: development
@@ -9,7 +10,7 @@ services:
       - "8000:8000"
     volumes:
       - ".:/app"
-    command: [ "npm", "run", "dev" ]
+    command: [ "npm", "run", "start" ]
 
   mariadb:
     image: mariadb:11.2.2

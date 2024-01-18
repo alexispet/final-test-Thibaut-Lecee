@@ -23,13 +23,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker compose up -d --build
+      - run: docker build --target=server --platform=linux/amd64 .
+      - run: docker compose up -d
 
   test:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: docker build --target=server --platform=linux/amd64 .
       - run: docker compose up -d
       - run: sleep 30
       - run: docker compose exec node npm run test
