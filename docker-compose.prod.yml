@@ -1,6 +1,8 @@
 services:
   node:
-    depends_on: [ mariadb ]
+    depends_on:
+      mariadb:
+        condition: service_healthy
     image: ghcr.io/alexispet/final-test-thibaut-lecee/nodeexpress:main
     env_file:
       - .env
@@ -15,11 +17,9 @@ services:
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
-      - "traefik.http.routers.express-http.rule=Host(`thibaut-lecee.alpex.ovh`)"
-      - "traefik.http.routers.express-http.entrypoints=websecure"
-      - "traefik.http.routers.express-http.tls.certresolver=myresolver"
-
-
+      - "traefik.http.routers.express-prod.rule=Host(`thibaut-lecee.alpex.ovh`)"
+      - "traefik.http.routers.express-prod.entrypoints=websecure"
+      - "traefik.http.routers.express-prod.tls.certresolver=myresolver"
 
   mariadb:
     image: mariadb:11.2.2
@@ -30,6 +30,11 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      interval: 5s
+      timeout: 20s
+      retries: 10
 
 networks:
   frontend:

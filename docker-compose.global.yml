@@ -23,11 +23,6 @@ services:
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
       - "--certificatesresolvers.myresolver.acme.email=thibaut.lecee@viacesi.fr"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-    labels:
-      - "traefik.http.routers.express-http.entrypoints=web"
-      - "traefik.http.routers.express-http.tls.certresolver=myresolver"
-      - "traefik.http.routers.express-http.middlewares=redirect-to-https"
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
     ports:
       - "80:80"
       - "443:443"
