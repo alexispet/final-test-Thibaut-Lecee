@@ -1,10 +1,7 @@
 services:
   node:
+    depends_on: [ mariadb ]
     image: ghcr.io/alexispet/final-test-thibaut-lecee/nodeexpress:main
-    ports:
-      - "80:3000"
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     env_file:
       - .env
     environment:
@@ -12,12 +9,33 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_DATABASE: ${DB_DATABASE}
+    networks:
+      - frontend
+      - backend
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.express-http.rule=Host(`thibaut-lecee.alpex.ovh`)"
+      - "traefik.http.routers.express-http.entrypoints=websecure"
+      - "traefik.http.routers.express-http.tls.certresolver=myresolver"
+
 
 
   mariadb:
     image: mariadb:11.2.2
+    networks:
+      - backend
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
+
+networks:
+  frontend:
+    external: true
+    name: custom_frontend
+
+  backend:
+    external: true
+    name: custom_backend

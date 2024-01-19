@@ -1,0 +1,25 @@
+name: Lighthouse
+
+run-name: ${{ github.actor }} is running Lighthouse
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  schedule:
+    - cron: "0 0 * * *"  # Every day at midnight
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            https://thibaut-lecee.alpex.ovh/test
+          budgetPath: ./budget.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
