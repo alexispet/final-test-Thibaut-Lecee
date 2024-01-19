@@ -10,6 +10,7 @@ services:
     container_name: "traefik"
     networks:
       - frontend
+      - backend
     command:
       - "--log.level=DEBUG"
       - "--api.insecure=true"
@@ -19,7 +20,7 @@ services:
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
       - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
       - "--certificatesresolvers.myresolver.acme.email=thibaut.lecee@viacesi.fr"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
@@ -34,3 +35,7 @@ networks:
   frontend:
     driver: bridge
     name: custom_frontend
+
+  backend:
+    driver: bridge
+    name: custom_backend

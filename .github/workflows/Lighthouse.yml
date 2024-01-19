@@ -19,9 +19,7 @@ jobs:
         uses: treosh/lighthouse-ci-action@v10
         with:
           urls: |
-            http://ec2-54-145-123-56.compute-1.amazonaws.com/test
-
-            http://54.145.123.56/test
+            https://thibaut-lecee.alpex.ovh/test
           budgetPath: ./budget.json
           uploadArtifacts: true
           temporaryPublicStorage: true
